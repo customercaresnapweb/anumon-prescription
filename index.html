@@ -13,21 +13,33 @@
     <style>
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
         .hero-pattern { background-color: #f0f9ff; background-image: radial-gradient(#bae6fd 1px, transparent 1px); background-size: 20px 20px; }
+        .timeline-dot::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 6px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: #0284c7; /* sky-600 */
+            border: 3px solid #e0f2fe; /* sky-100 */
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased">
 
     <!-- Navigation -->
     <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex-shrink-0 flex items-center gap-2">
                     <i class="fa-solid fa-brain text-sky-600 text-2xl"></i>
                     <span class="font-bold text-xl tracking-tight text-slate-900">Dr. Anu Mon Monsey</span>
                 </div>
                 <div class="hidden md:flex space-x-8">
-                    <a href="#about" class="text-slate-600 hover:text-sky-600 font-medium transition">About</a>
-                    <a href="#focus" class="text-slate-600 hover:text-sky-600 font-medium transition">Clinical Focus</a>
+                    <a href="#about" class="text-slate-600 hover:text-sky-600 font-medium transition">Profile</a>
+                    <a href="#experience" class="text-slate-600 hover:text-sky-600 font-medium transition">Experience</a>
+                    <a href="#competencies" class="text-slate-600 hover:text-sky-600 font-medium transition">Competencies</a>
                     <a href="#contact" class="text-slate-600 hover:text-sky-600 font-medium transition">Consultations</a>
                 </div>
                 <div class="md:hidden">
@@ -39,15 +51,15 @@
 
     <!-- Hero Section -->
     <section class="hero-pattern pt-20 pb-24 border-b border-sky-100">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
                 Dr. Anu Mon Monsey
             </h1>
-            <p class="text-xl md:text-2xl text-sky-700 font-medium mb-2">
+            <p class="text-xl md:text-2xl text-sky-700 font-semibold mb-3">
                 Consultant Psychiatrist
             </p>
-            <p class="text-slate-500 font-medium mb-8">
-                MBBS, MD Psychiatry | GMC Trivandrum
+            <p class="text-slate-500 font-medium mb-6">
+                MBBS, MD Psychiatry | GMC Thiruvananthapuram
             </p>
             <p class="max-w-2xl mx-auto text-lg text-slate-600 mb-10 italic">
                 "Curious about minds, people & life."
@@ -57,126 +69,224 @@
                     Book Consultation
                 </a>
                 <a href="#about" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-8 py-3 rounded-xl font-semibold shadow-sm transition-all">
-                    Learn More
+                    View Profile
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- About & Focus Section -->
-    <section id="focus" class="py-20 bg-white">
+    <!-- Professional Profile Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="w-16 h-1 bg-sky-500 mx-auto rounded-full mb-6"></div>
+            <h2 class="text-3xl font-bold text-slate-900 mb-8">Professional Profile</h2>
+            <p class="text-lg text-slate-600 leading-relaxed text-justify md:text-center">
+                Consultant Psychiatrist with postgraduate training and experience across tertiary-care, inpatient, outpatient, emergency, and liaison settings. Skilled in the assessment and evidence-based management of common and severe mental disorders, collaborative care planning, crisis intervention, and mental-health education. Deeply committed to ethical, patient-centred, and multidisciplinary psychiatric care.
+            </p>
+        </div>
+    </section>
+
+    <!-- Experience & Education Section -->
+    <section id="experience" class="py-20 bg-slate-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-16">
+                
+                <!-- Experience Timeline -->
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 mb-10 flex items-center gap-3">
+                        <i class="fa-solid fa-briefcase text-sky-500"></i> Professional Experience
+                    </h2>
+                    <div class="border-l-2 border-sky-200 ml-3 pl-8 space-y-10 relative">
+                        
+                        <div class="timeline-dot relative">
+                            <span class="text-sm font-bold text-sky-600 bg-sky-100 px-3 py-1 rounded-full inline-block mb-3">May 2026 – Present</span>
+                            <h3 class="text-xl font-bold text-slate-900">Consultant Psychiatrist</h3>
+                            <p class="text-slate-500 font-medium mb-2">Holy Ghost Mission Hospital, Kottayam</p>
+                            <p class="text-slate-600 text-sm leading-relaxed">Consultation and ongoing care across outpatient and hospital-based settings. Focuses on assessment, diagnosis, treatment planning, medication review, and coordination with multidisciplinary teams.</p>
+                        </div>
+
+                        <div class="timeline-dot relative">
+                            <span class="text-sm font-bold text-sky-600 bg-sky-100 px-3 py-1 rounded-full inline-block mb-3">Apr 2026 – May 2026</span>
+                            <h3 class="text-xl font-bold text-slate-900">Consultant Psychiatrist</h3>
+                            <p class="text-slate-500 font-medium mb-2">ACCEPT De-addiction IP Centre, Alappuzha</p>
+                            <p class="text-slate-600 text-sm leading-relaxed">Provided specialized psychiatric assessment and treatment in an inpatient de-addiction setting.</p>
+                        </div>
+
+                        <div class="timeline-dot relative">
+                            <span class="text-sm font-bold text-sky-600 bg-sky-100 px-3 py-1 rounded-full inline-block mb-3">Jun 2025 – Apr 2026</span>
+                            <h3 class="text-xl font-bold text-slate-900">Senior Resident, Dept. of Psychiatry</h3>
+                            <p class="text-slate-500 font-medium mb-2">Government T. D. Medical College, Alappuzha</p>
+                            <p class="text-slate-600 text-sm leading-relaxed">Managed psychiatric OPD and inpatient services. Assessed and treated psychotic, mood, anxiety, OCD, substance-use, neurocognitive, and eating disorders. Supervised junior residents, interns, and nursing staff.</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Education & Training -->
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 mb-10 flex items-center gap-3">
+                        <i class="fa-solid fa-graduation-cap text-sky-500"></i> Education & Training
+                    </h2>
+                    
+                    <div class="space-y-6 mb-10">
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h3 class="text-lg font-bold text-slate-900">MD Psychiatry</h3>
+                            <p class="text-slate-500 text-sm mb-1">Government Medical College, Thiruvananthapuram</p>
+                            <p class="text-sky-600 text-sm font-semibold">2022 – 2025</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                            <h3 class="text-lg font-bold text-slate-900">MBBS</h3>
+                            <p class="text-slate-500 text-sm mb-1">Government Medical College, Thiruvananthapuram</p>
+                            <p class="text-sky-600 text-sm font-semibold">2013 – 2019</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-slate-900 mb-6">Specialised Certifications</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3 bg-white p-4 rounded-lg border border-slate-100">
+                            <i class="fa-solid fa-certificate text-sky-500 mt-1"></i>
+                            <span class="text-slate-700 text-sm font-medium">Child Psychiatry – Autism Training Centre, CMC Vellore</span>
+                        </li>
+                        <li class="flex items-start gap-3 bg-white p-4 rounded-lg border border-slate-100">
+                            <i class="fa-solid fa-certificate text-sky-500 mt-1"></i>
+                            <span class="text-slate-700 text-sm font-medium">Neuropsychology and Behavioural Therapy – NIMHANS, Bengaluru</span>
+                        </li>
+                        <li class="flex items-start gap-3 bg-white p-4 rounded-lg border border-slate-100">
+                            <i class="fa-solid fa-certificate text-sky-500 mt-1"></i>
+                            <span class="text-slate-700 text-sm font-medium">Basic Course in Biomedical Research – ICMR</span>
+                        </li>
+                        <li class="flex items-start gap-3 bg-white p-4 rounded-lg border border-slate-100">
+                            <i class="fa-solid fa-heart-pulse text-rose-400 mt-1"></i>
+                            <span class="text-slate-700 text-sm font-medium">BLS & Advanced Cardiovascular Life Support (ACLS)</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Clinical Competencies Section -->
+    <section id="competencies" class="py-20 bg-white">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-slate-900 mb-4">Clinical Philosophy</h2>
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Clinical Competencies</h2>
                 <div class="w-16 h-1 bg-sky-500 mx-auto rounded-full"></div>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
-                    <div class="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-microscope text-sky-600 text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Evidence-Based Care</h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        Providing comprehensive, evidence-based mental healthcare rooted in modern psychiatric practices and rigorous medical training.
-                    </p>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
+                    <i class="fa-solid fa-clipboard-user text-sky-600 text-2xl mb-4"></i>
+                    <h3 class="font-bold text-slate-900 mb-2">Psychiatric Assessment</h3>
+                    <p class="text-slate-600 text-sm">Comprehensive diagnostic formulation, risk assessment, and crisis intervention across settings.</p>
                 </div>
-
-                <!-- Card 2 -->
-                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
-                    <div class="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-people-arrows text-sky-600 text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Community Integration</h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        Working at the vital intersection of clinical psychiatry and community mental health to build better support systems.
-                    </p>
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
+                    <i class="fa-solid fa-pills text-sky-600 text-2xl mb-4"></i>
+                    <h3 class="font-bold text-slate-900 mb-2">Psychopharmacology</h3>
+                    <p class="text-slate-600 text-sm">Expertise in medication management, dose titration, and meticulous adverse-effect monitoring.</p>
                 </div>
-
-                <!-- Card 3 -->
-                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
-                    <div class="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-arrow-trend-up text-sky-600 text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Functional Outcomes</h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        A strong clinical focus on improving cognition, facilitating long-term recovery, and optimizing daily functional outcomes for patients.
-                    </p>
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
+                    <i class="fa-solid fa-brain text-sky-600 text-2xl mb-4"></i>
+                    <h3 class="font-bold text-slate-900 mb-2">Psychosocial Interventions</h3>
+                    <p class="text-slate-600 text-sm">Familiarity with therapeutic frameworks including CBT, DBT, MET, SFBT, and ACT.</p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
+                    <i class="fa-solid fa-users text-sky-600 text-2xl mb-4"></i>
+                    <h3 class="font-bold text-slate-900 mb-2">Specialized Demographics</h3>
+                    <p class="text-slate-600 text-sm">Dedicated care encompassing child, adolescent, and geriatric psychiatry.</p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
+                    <i class="fa-solid fa-hospital-user text-sky-600 text-2xl mb-4"></i>
+                    <h3 class="font-bold text-slate-900 mb-2">Comprehensive Care</h3>
+                    <p class="text-slate-600 text-sm">Experienced in inpatient, outpatient, emergency, and consultation-liaison psychiatry.</p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
+                    <i class="fa-solid fa-person-chalkboard text-sky-600 text-2xl mb-4"></i>
+                    <h3 class="font-bold text-slate-900 mb-2">Education & Research</h3>
+                    <p class="text-slate-600 text-sm">Active in mentoring, teaching, and community mental-health education. Researched mental illness prevalence among homeless destitute persons.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Clinics & Contact Section -->
-    <section id="contact" class="py-20 bg-slate-50">
+    <section id="contact" class="py-20 bg-slate-900 text-white">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-slate-900 mb-4">Consultation & Locations</h2>
+                <h2 class="text-3xl font-bold mb-4">Consultation & Locations</h2>
                 <div class="w-16 h-1 bg-sky-500 mx-auto rounded-full mb-6"></div>
-                <p class="text-slate-600 max-w-2xl mx-auto">Available for both in-person hospital visits and convenient online consultations.</p>
+                <p class="text-slate-400 max-w-2xl mx-auto">Available for in-person hospital visits and convenient online sessions.</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8">
                 
                 <!-- Online Practice -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-sky-50 rounded-bl-full -z-10"></div>
+                <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700">
                     <div class="flex items-center gap-4 mb-6">
-                        <div class="bg-sky-600 text-white p-3 rounded-xl">
+                        <div class="bg-sky-500/20 text-sky-400 p-3 rounded-xl">
                             <i class="fa-solid fa-laptop-medical text-xl"></i>
                         </div>
                         <div>
-                            <h3 class="text-2xl font-bold text-slate-900">Mindwise MD</h3>
-                            <p class="text-sky-600 font-medium text-sm uppercase tracking-wide">Online Consultations</p>
+                            <h3 class="text-2xl font-bold">Online Consultations</h3>
+                            <p class="text-sky-400 font-medium text-sm">Mindwise MD</p>
                         </div>
                     </div>
-                    <ul class="space-y-4 mb-8 text-slate-600">
+                    <ul class="space-y-4 mb-8 text-slate-300">
                         <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-sky-500 mt-1"></i>
+                            <i class="fa-solid fa-check text-sky-400 mt-1"></i>
                             <span>Evidence-Based Mental Healthcare</span>
                         </li>
                         <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-sky-500 mt-1"></i>
+                            <i class="fa-solid fa-check text-sky-400 mt-1"></i>
                             <span>Convenient online sessions via DM & WhatsApp</span>
                         </li>
                     </ul>
-                    <a href="https://wa.me/916369705903" target="_blank" class="block w-full text-center bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl transition-colors">
-                        <i class="fa-brands fa-whatsapp mr-2"></i> WhatsApp Consultation
-                    </a>
+                    <div class="space-y-3">
+                        <a href="https://wa.me/919995910520" target="_blank" class="block w-full text-center bg-green-600 hover:bg-green-500 text-white font-semibold py-3 rounded-xl transition-colors">
+                            <i class="fa-brands fa-whatsapp mr-2"></i> WhatsApp Consultation
+                        </a>
+                        <a href="https://www.instagram.com/mindwisemd" target="_blank" class="block w-full text-center bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 text-white font-semibold py-3 rounded-xl transition-opacity">
+                            <i class="fa-brands fa-instagram mr-2"></i> Connect on Instagram
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Hospital Practice -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-bl-full -z-10"></div>
+                <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700">
                     <div class="flex items-center gap-4 mb-6">
-                        <div class="bg-slate-800 text-white p-3 rounded-xl">
+                        <div class="bg-slate-700 text-white p-3 rounded-xl">
                             <i class="fa-regular fa-hospital text-xl"></i>
                         </div>
                         <div>
-                            <h3 class="text-xl font-bold text-slate-900 leading-tight">Holy Ghost Mission Hospital</h3>
-                            <p class="text-slate-500 font-medium text-sm">Muttuchira, Kottayam, Kerala</p>
+                            <h3 class="text-xl font-bold leading-tight">Holy Ghost Mission Hospital</h3>
+                            <p class="text-slate-400 font-medium text-sm">Muttuchira, Kottayam, Kerala - 691531</p>
                         </div>
                     </div>
-                    <div class="space-y-4 mb-8 text-slate-600">
+                    <div class="space-y-5 mb-8 text-slate-300">
                         <div class="flex items-start gap-3">
-                            <i class="fa-regular fa-clock text-sky-500 mt-1"></i>
+                            <i class="fa-regular fa-clock text-sky-400 mt-1"></i>
                             <div>
-                                <p class="font-semibold text-slate-800">OP Timings:</p>
-                                <p>Monday to Friday</p>
-                                <p>Morning & Evening Sessions</p>
+                                <p class="font-semibold text-white">OP Timings:</p>
+                                <p class="text-sm">Monday to Friday</p>
+                                <p class="text-sm">Morning & Evening Sessions</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-3 pt-2">
-                            <i class="fa-solid fa-phone text-sky-500 mt-1"></i>
+                        <div class="flex items-start gap-3 pt-2 border-t border-slate-700">
+                            <i class="fa-solid fa-phone text-sky-400 mt-1"></i>
                             <div>
-                                <p class="font-semibold text-slate-800">Appointments:</p>
-                                <p>04829 216600</p>
-                                <p>9497216600</p>
+                                <p class="font-semibold text-white">Appointments:</p>
+                                <p class="text-sm">04829 216600, 9497216600</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 pt-2 border-t border-slate-700">
+                            <i class="fa-solid fa-envelope text-sky-400 mt-1"></i>
+                            <div>
+                                <p class="font-semibold text-white">Email:</p>
+                                <p class="text-sm">dranumonmonsey@gmail.com</p>
                             </div>
                         </div>
                     </div>
-                    <a href="tel:04829216600" class="block w-full text-center bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold py-3 rounded-xl transition-colors">
+                    <a href="tel:04829216600" class="block w-full text-center bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl transition-colors">
                         Call for Appointment
                     </a>
                 </div>
@@ -186,27 +296,27 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 py-12">
+    <footer class="bg-slate-950 text-slate-500 py-10 border-t border-slate-800">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
             <div>
-                <div class="flex items-center gap-2 mb-2">
-                    <i class="fa-solid fa-brain text-sky-500"></i>
-                    <span class="font-bold text-xl text-white">Dr. Anu Mon Monsey</span>
+                <div class="flex items-center gap-2 mb-1">
+                    <i class="fa-solid fa-brain text-sky-600"></i>
+                    <span class="font-bold text-lg text-slate-300">Dr. Anu Mon Monsey</span>
                 </div>
                 <p class="text-sm">Consultant Psychiatrist • Kerala, India</p>
+                <p class="text-xs mt-1">English • Malayalam • Tamil • Hindi</p>
             </div>
             
             <div class="flex gap-4">
-                <!-- Instagram links based on references -->
-                <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-sky-600 hover:text-white transition-colors">
+                <a href="https://www.instagram.com/mindwisemd" target="_blank" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-sky-600 hover:text-white transition-colors">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
-                <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-sky-600 hover:text-white transition-colors">
-                    <i class="fa-brands fa-threads"></i>
+                <a href="mailto:dranumonmonsey@gmail.com" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-sky-600 hover:text-white transition-colors">
+                    <i class="fa-regular fa-envelope"></i>
                 </a>
             </div>
         </div>
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-8 border-t border-slate-800 text-sm text-center md:text-left">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-slate-900 text-sm text-center md:text-left">
             &copy; 2026 Dr. Anu Mon Monsey. All rights reserved.
         </div>
     </footer>

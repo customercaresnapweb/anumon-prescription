@@ -3,323 +3,488 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. Anu Mon Monsey | Consultant Psychiatrist</title>
-    <!-- Tailwind CSS -->
+    <title>Clinical Certificate & Report Generator</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        .hero-pattern { background-color: #f0f9ff; background-image: radial-gradient(#bae6fd 1px, transparent 1px); background-size: 20px 20px; }
-        .timeline-dot::before {
-            content: '';
-            position: absolute;
-            left: -33px;
-            top: 6px;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background-color: #0284c7; /* sky-600 */
-            border: 3px solid #e0f2fe; /* sky-100 */
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        tailwind.config = { 
+            theme: { 
+                extend: { 
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'], 
+                        serif: ['"Times New Roman"', 'Times', 'serif'] 
+                    }, 
+                    colors: { 
+                        brand: { 
+                            primary: '#1e3a8a',
+                            secondary: '#3b82f6',
+                            dark: '#0f172a',
+                            slate: '#475569',
+                            light: '#f8fafc',
+                            bg: '#e0e7ff'
+                        } 
+                    } 
+                } 
+            } 
         }
+    </script>
+    <style>
+        body { 
+            background-color: #e0e7ff; 
+            overflow-x: hidden; 
+        }
+        .a4-print, .a4-print input, .a4-print textarea, .a4-print p, .a4-print span, .a4-print h1, .a4-print h2, .a4-print h3, .a4-print div { 
+            font-family: 'Times New Roman', Times, serif !important; 
+        }
+        .a4-print { 
+            width: 210mm; 
+            min-height: 297mm; 
+            background: white; 
+            margin: 0 auto; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
+        }
+        .report-section { position: relative; margin-bottom: 8px; }
+        .rich-text strong { font-weight: 700; color: #1e3a8a; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        
+        input, textarea, select { transition: all 0.2s ease-in-out; }
+        input:focus, textarea:focus, select:focus { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); }
+
+        @media print { .no-print { display: none !important; } .a4-print{ box-shadow: none; } }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased">
+<body class="text-brand-slate font-sans antialiased">
 
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex-shrink-0 flex items-center gap-2">
-                    <i class="fa-solid fa-brain text-sky-600 text-2xl"></i>
-                    <span class="font-bold text-xl tracking-tight text-slate-900">Dr. Anu Mon Monsey</span>
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#about" class="text-slate-600 hover:text-sky-600 font-medium transition">Profile</a>
-                    <a href="#experience" class="text-slate-600 hover:text-sky-600 font-medium transition">Experience</a>
-                    <a href="#competencies" class="text-slate-600 hover:text-sky-600 font-medium transition">Competencies</a>
-                    <a href="#contact" class="text-slate-600 hover:text-sky-600 font-medium transition">Consultations</a>
-                </div>
-                <div class="md:hidden">
-                    <a href="#contact" class="bg-sky-600 text-white px-4 py-2 rounded-lg font-medium text-sm">Book Appt</a>
+    <!-- Login Screen -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center bg-brand-bg px-4 fixed inset-0 z-50">
+        <div class="bg-white p-10 rounded-[2rem] shadow-2xl w-full max-w-md border border-white/50 backdrop-blur-sm">
+            <div class="flex justify-center mb-6">
+                <div class="h-16 w-16 bg-blue-50 rounded-2xl flex items-center justify-center text-brand-primary shadow-inner">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                 </div>
             </div>
+            <h1 class="text-2xl font-extrabold text-center text-brand-dark mb-8 tracking-tight">Clinical Portal</h1>
+            <form id="login-form" class="space-y-6">
+                <input type="password" id="pin-input" class="w-full px-4 py-4 rounded-xl border-2 border-slate-200 focus:border-brand-secondary outline-none text-center text-3xl font-bold tracking-[0.5em] transition-all" placeholder="••••" required autofocus>
+                <button type="submit" class="w-full bg-brand-primary text-white font-bold py-4 rounded-xl hover:bg-brand-secondary transition-colors shadow-lg hover:shadow-blue-500/30">Secure Login</button>
+            </form>
         </div>
-    </nav>
+    </div>
 
-    <!-- Hero Section -->
-    <section class="hero-pattern pt-20 pb-24 border-b border-sky-100">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
-                Dr. Anu Mon Monsey
-            </h1>
-            <p class="text-xl md:text-2xl text-sky-700 font-semibold mb-3">
-                Consultant Psychiatrist
-            </p>
-            <p class="text-slate-500 font-medium mb-6">
-                MBBS, MD Psychiatry | GMC Thiruvananthapuram
-            </p>
-            <p class="max-w-2xl mx-auto text-lg text-slate-600 mb-10 italic">
-                "Curious about minds, people & life."
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#contact" class="bg-sky-600 hover:bg-sky-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg shadow-sky-200 transition-all">
-                    Book Consultation
-                </a>
-                <a href="#about" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-8 py-3 rounded-xl font-semibold shadow-sm transition-all">
-                    View Profile
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Professional Profile Section -->
-    <section id="about" class="py-20 bg-white">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="w-16 h-1 bg-sky-500 mx-auto rounded-full mb-6"></div>
-            <h2 class="text-3xl font-bold text-slate-900 mb-8">Professional Profile</h2>
-            <p class="text-lg text-slate-600 leading-relaxed text-justify md:text-center">
-                Consultant Psychiatrist with postgraduate training and experience across tertiary-care, inpatient, outpatient, emergency, and liaison settings. Skilled in the assessment and evidence-based management of common and severe mental disorders, collaborative care planning, crisis intervention, and mental-health education. Deeply committed to ethical, patient-centred, and multidisciplinary psychiatric care.
-            </p>
-        </div>
-    </section>
-
-    <!-- Experience & Education Section -->
-    <section id="experience" class="py-20 bg-slate-50">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-2 gap-16">
-                
-                <!-- Experience Timeline -->
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-900 mb-10 flex items-center gap-3">
-                        <i class="fa-solid fa-briefcase text-sky-500"></i> Professional Experience
-                    </h2>
-                    <div class="border-l-2 border-sky-200 ml-3 pl-8 space-y-10 relative">
-                        
-                        <div class="timeline-dot relative">
-                            <span class="text-sm font-bold text-sky-600 bg-sky-100 px-3 py-1 rounded-full inline-block mb-3">May 2026 – Present</span>
-                            <h3 class="text-xl font-bold text-slate-900">Consultant Psychiatrist</h3>
-                            <p class="text-slate-500 font-medium mb-2">Holy Ghost Mission Hospital, Kottayam</p>
-                            <p class="text-slate-600 text-sm leading-relaxed">Consultation and ongoing care across outpatient and hospital-based settings. Focuses on assessment, diagnosis, treatment planning, medication review, and coordination with multidisciplinary teams.</p>
-                        </div>
-
-                        <div class="timeline-dot relative">
-                            <span class="text-sm font-bold text-sky-600 bg-sky-100 px-3 py-1 rounded-full inline-block mb-3">Apr 2026 – May 2026</span>
-                            <h3 class="text-xl font-bold text-slate-900">Consultant Psychiatrist</h3>
-                            <p class="text-slate-500 font-medium mb-2">ACCEPT De-addiction IP Centre, Alappuzha</p>
-                            <p class="text-slate-600 text-sm leading-relaxed">Provided specialized psychiatric assessment and treatment in an inpatient de-addiction setting.</p>
-                        </div>
-
-                        <div class="timeline-dot relative">
-                            <span class="text-sm font-bold text-sky-600 bg-sky-100 px-3 py-1 rounded-full inline-block mb-3">Jun 2025 – Apr 2026</span>
-                            <h3 class="text-xl font-bold text-slate-900">Senior Resident, Dept. of Psychiatry</h3>
-                            <p class="text-slate-500 font-medium mb-2">Government T. D. Medical College, Alappuzha</p>
-                            <p class="text-slate-600 text-sm leading-relaxed">Managed psychiatric OPD and inpatient services. Assessed and treated psychotic, mood, anxiety, OCD, substance-use, neurocognitive, and eating disorders. Supervised junior residents, interns, and nursing staff.</p>
-                        </div>
-
+    <!-- Application Main Screen -->
+    <div id="app-screen" class="min-h-screen p-2 lg:p-6 hidden">
+        <div class="max-w-[1650px] mx-auto grid lg:grid-cols-12 gap-6 items-start">
+            
+            <!-- Left Controls Form -->
+            <div class="w-full lg:col-span-4 bg-white p-6 rounded-3xl shadow-xl border border-slate-100 lg:sticky lg:top-6 no-print z-10 max-h-[92vh] overflow-y-auto custom-scrollbar">
+                <div class="flex items-center gap-4 mb-6 border-b border-slate-100 pb-5">
+                    <div class="h-12 w-12 bg-blue-50 rounded-2xl flex items-center justify-center text-brand-secondary shrink-0">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-brand-dark tracking-tight">Report Editor</h2>
+                        <p class="text-sm text-brand-slate font-medium">Dr. Anu Mon Monsey</p>
                     </div>
                 </div>
+                
+                <div class="space-y-5 text-sm">
+                    <div class="grid grid-cols-2 gap-3 mb-2">
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                            <label class="block font-bold text-[11px] uppercase tracking-wider text-brand-secondary mb-2">Upload Signature</label>
+                            <input type="file" id="in-signature-image" accept="image/*" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-bold file:bg-brand-primary file:text-white hover:file:bg-brand-secondary cursor-pointer transition-colors">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                            <label class="block font-bold text-[11px] uppercase tracking-wider text-brand-secondary mb-2">Upload Seal</label>
+                            <input type="file" id="in-seal-image" accept="image/*" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-bold file:bg-brand-primary file:text-white hover:file:bg-brand-secondary cursor-pointer transition-colors">
+                        </div>
+                    </div>
 
-                <!-- Education & Training -->
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-900 mb-10 flex items-center gap-3">
-                        <i class="fa-solid fa-graduation-cap text-sky-500"></i> Education & Training
-                    </h2>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="block font-semibold text-brand-dark mb-1.5">Assessment Date</label>
+                            <input type="date" id="in-assessment-date" class="w-full p-3 rounded-xl border border-slate-200 focus:border-brand-secondary outline-none transition-all bg-slate-50 focus:bg-white text-brand-dark">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-brand-dark mb-1.5">Date of Birth</label>
+                            <input type="date" id="in-dob" class="w-full p-3 rounded-xl border border-slate-200 focus:border-brand-secondary outline-none transition-all bg-slate-50 focus:bg-white text-brand-dark">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-brand-dark mb-1.5">Age</label>
+                            <input type="text" id="in-age" placeholder="e.g. 32 Years" class="w-full p-3 rounded-xl border border-slate-200 focus:border-brand-secondary outline-none transition-all bg-slate-50 focus:bg-white text-brand-dark">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-brand-dark mb-1.5">Patient Full Name</label>
+                        <input type="text" id="in-name" placeholder="Enter patient name" class="w-full p-3 rounded-xl border border-slate-200 focus:border-brand-secondary outline-none transition-all font-medium bg-slate-50 focus:bg-white text-brand-dark">
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="col-span-1">
+                            <label class="block font-semibold text-brand-dark mb-1.5">Gender</label>
+                            <select id="in-gender" class="w-full p-3 rounded-xl border border-slate-200 focus:border-brand-secondary outline-none transition-all bg-slate-50 focus:bg-white text-brand-dark">
+                                <option value="">Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block font-semibold text-brand-dark mb-1.5">Address & Contact</label>
+                            <input type="text" id="in-address" placeholder="City, State & Phone" class="w-full p-3 rounded-xl border border-slate-200 focus:border-brand-secondary outline-none transition-all bg-slate-50 focus:bg-white text-brand-dark">
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-blue-50/50 rounded-xl border border-blue-100 text-xs text-brand-slate flex gap-2 items-start">
+                        <svg class="w-4 h-4 text-brand-secondary mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <p><span class="font-bold text-brand-primary">Formatting Tip:</span> Wrap text in double asterisks to make it bold (e.g., <code class="bg-white px-1 py-0.5 rounded border border-slate-200 font-mono text-brand-secondary">**anxiety symptoms**</code>).</p>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-brand-primary mb-1.5">Clinical Evaluation</label>
+                        <textarea id="in-evaluation" placeholder="Enter detailed findings..." rows="4" class="w-full p-3 rounded-xl border border-slate-200 focus:border-brand-secondary outline-none transition-all resize-y text-sm leading-relaxed bg-slate-50 focus:bg-white text-brand-dark"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-brand-primary mb-1.5">Background and History</label>
+                        <textarea id="in-history" placeholder="Enter occupational/medical history..." rows="3" class="w-full p-3 rounded-xl border border-slate-200 focus:border-brand-secondary outline-none transition-all resize-y text-sm leading-relaxed bg-slate-50 focus:bg-white text-brand-dark"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-brand-primary mb-1.5">Diagnosis</label>
+                        <input type="text" id="in-diagnosis" placeholder="Primary Diagnosis" class="w-full p-3 rounded-xl border border-slate-200 focus:border-brand-secondary outline-none transition-all font-semibold bg-slate-50 focus:bg-white text-brand-dark">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-brand-primary mb-1.5">Treatment and Management</label>
+                        <textarea id="in-treatment" placeholder="Advised medications, follow-up, and plan..." rows="4" class="w-full p-3 rounded-xl border border-slate-200 focus:border-brand-secondary outline-none transition-all resize-y text-sm leading-relaxed bg-slate-50 focus:bg-white text-brand-dark"></textarea>
+                    </div>
+
+                    <button id="export-btn" onclick="generatePDF()" class="w-full bg-brand-primary text-white font-bold py-4 rounded-xl mt-6 hover:bg-brand-secondary transition-colors shadow-lg hover:shadow-blue-500/30 flex items-center justify-center gap-2 text-base">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Generate PDF Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Preview Panel (A4 Format) -->
+            <div class="w-full lg:col-span-8 flex justify-center pb-12 overflow-x-auto sm:overflow-visible relative">
+                <div class="h-[650px] sm:h-[850px] lg:h-auto w-full flex justify-center">
                     
-                    <div class="space-y-6 mb-10">
-                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                            <h3 class="text-lg font-bold text-slate-900">MD Psychiatry</h3>
-                            <p class="text-slate-500 text-sm mb-1">Government Medical College, Thiruvananthapuram</p>
-                            <p class="text-sky-600 text-sm font-semibold">2022 – 2025</p>
+                    <div id="prescription-preview" class="a4-print flex flex-col relative bg-white overflow-hidden text-brand-dark shrink-0 w-[794px] min-w-[794px] min-h-[1123px] scale-[0.48] sm:scale-[0.7] lg:scale-100 origin-top">
+                        
+                        <!-- Top Accent Bar -->
+                        <div class="flex w-full h-3">
+                            <div class="w-3/4 bg-brand-primary"></div>
+                            <div class="w-1/4 bg-brand-secondary"></div>
                         </div>
-                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                            <h3 class="text-lg font-bold text-slate-900">MBBS</h3>
-                            <p class="text-slate-500 text-sm mb-1">Government Medical College, Thiruvananthapuram</p>
-                            <p class="text-sky-600 text-sm font-semibold">2013 – 2019</p>
-                        </div>
-                    </div>
 
-                    <h3 class="text-xl font-bold text-slate-900 mb-6">Specialised Certifications</h3>
-                    <ul class="space-y-3">
-                        <li class="flex items-start gap-3 bg-white p-4 rounded-lg border border-slate-100">
-                            <i class="fa-solid fa-certificate text-sky-500 mt-1"></i>
-                            <span class="text-slate-700 text-sm font-medium">Child Psychiatry – Autism Training Centre, CMC Vellore</span>
-                        </li>
-                        <li class="flex items-start gap-3 bg-white p-4 rounded-lg border border-slate-100">
-                            <i class="fa-solid fa-certificate text-sky-500 mt-1"></i>
-                            <span class="text-slate-700 text-sm font-medium">Neuropsychology and Behavioural Therapy – NIMHANS, Bengaluru</span>
-                        </li>
-                        <li class="flex items-start gap-3 bg-white p-4 rounded-lg border border-slate-100">
-                            <i class="fa-solid fa-certificate text-sky-500 mt-1"></i>
-                            <span class="text-slate-700 text-sm font-medium">Basic Course in Biomedical Research – ICMR</span>
-                        </li>
-                        <li class="flex items-start gap-3 bg-white p-4 rounded-lg border border-slate-100">
-                            <i class="fa-solid fa-heart-pulse text-rose-400 mt-1"></i>
-                            <span class="text-slate-700 text-sm font-medium">BLS & Advanced Cardiovascular Life Support (ACLS)</span>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Clinical Competencies Section -->
-    <section id="competencies" class="py-20 bg-white">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-slate-900 mb-4">Clinical Competencies</h2>
-                <div class="w-16 h-1 bg-sky-500 mx-auto rounded-full"></div>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
-                    <i class="fa-solid fa-clipboard-user text-sky-600 text-2xl mb-4"></i>
-                    <h3 class="font-bold text-slate-900 mb-2">Psychiatric Assessment</h3>
-                    <p class="text-slate-600 text-sm">Comprehensive diagnostic formulation, risk assessment, and crisis intervention across settings.</p>
-                </div>
-                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
-                    <i class="fa-solid fa-pills text-sky-600 text-2xl mb-4"></i>
-                    <h3 class="font-bold text-slate-900 mb-2">Psychopharmacology</h3>
-                    <p class="text-slate-600 text-sm">Expertise in medication management, dose titration, and meticulous adverse-effect monitoring.</p>
-                </div>
-                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
-                    <i class="fa-solid fa-brain text-sky-600 text-2xl mb-4"></i>
-                    <h3 class="font-bold text-slate-900 mb-2">Psychosocial Interventions</h3>
-                    <p class="text-slate-600 text-sm">Familiarity with therapeutic frameworks including CBT, DBT, MET, SFBT, and ACT.</p>
-                </div>
-                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
-                    <i class="fa-solid fa-users text-sky-600 text-2xl mb-4"></i>
-                    <h3 class="font-bold text-slate-900 mb-2">Specialized Demographics</h3>
-                    <p class="text-slate-600 text-sm">Dedicated care encompassing child, adolescent, and geriatric psychiatry.</p>
-                </div>
-                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
-                    <i class="fa-solid fa-hospital-user text-sky-600 text-2xl mb-4"></i>
-                    <h3 class="font-bold text-slate-900 mb-2">Comprehensive Care</h3>
-                    <p class="text-slate-600 text-sm">Experienced in inpatient, outpatient, emergency, and consultation-liaison psychiatry.</p>
-                </div>
-                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
-                    <i class="fa-solid fa-person-chalkboard text-sky-600 text-2xl mb-4"></i>
-                    <h3 class="font-bold text-slate-900 mb-2">Education & Research</h3>
-                    <p class="text-slate-600 text-sm">Active in mentoring, teaching, and community mental-health education. Researched mental illness prevalence among homeless destitute persons.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Clinics & Contact Section -->
-    <section id="contact" class="py-20 bg-slate-900 text-white">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold mb-4">Consultation & Locations</h2>
-                <div class="w-16 h-1 bg-sky-500 mx-auto rounded-full mb-6"></div>
-                <p class="text-slate-400 max-w-2xl mx-auto">Available for in-person hospital visits and convenient online sessions.</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-8">
-                
-                <!-- Online Practice -->
-                <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="bg-sky-500/20 text-sky-400 p-3 rounded-xl">
-                            <i class="fa-solid fa-laptop-medical text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-2xl font-bold">Online Consultations</h3>
-                            <p class="text-sky-400 font-medium text-sm">Mindwise MD</p>
-                        </div>
-                    </div>
-                    <ul class="space-y-4 mb-8 text-slate-300">
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-sky-400 mt-1"></i>
-                            <span>Evidence-Based Mental Healthcare</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-sky-400 mt-1"></i>
-                            <span>Convenient online sessions via DM & WhatsApp</span>
-                        </li>
-                    </ul>
-                    <div class="space-y-3">
-                        <a href="https://wa.me/919995910520" target="_blank" class="block w-full text-center bg-green-600 hover:bg-green-500 text-white font-semibold py-3 rounded-xl transition-colors">
-                            <i class="fa-brands fa-whatsapp mr-2"></i> WhatsApp Consultation
-                        </a>
-                        <a href="https://www.instagram.com/mindwisemd" target="_blank" class="block w-full text-center bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 text-white font-semibold py-3 rounded-xl transition-opacity">
-                            <i class="fa-brands fa-instagram mr-2"></i> Connect on Instagram
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Hospital Practice -->
-                <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="bg-slate-700 text-white p-3 rounded-xl">
-                            <i class="fa-regular fa-hospital text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold leading-tight">Holy Ghost Mission Hospital</h3>
-                            <p class="text-slate-400 font-medium text-sm">Muttuchira, Kottayam, Kerala - 691531</p>
-                        </div>
-                    </div>
-                    <div class="space-y-5 mb-8 text-slate-300">
-                        <div class="flex items-start gap-3">
-                            <i class="fa-regular fa-clock text-sky-400 mt-1"></i>
+                        <!-- Header Section -->
+                        <div class="px-10 pt-5 pb-2 flex justify-between items-center bg-white">
                             <div>
-                                <p class="font-semibold text-white">OP Timings:</p>
-                                <p class="text-sm">Monday to Friday</p>
-                                <p class="text-sm">Morning & Evening Sessions</p>
+                                <h1 class="text-3xl font-bold text-brand-primary tracking-wide mb-0.5">Dr. Anu Mon Monsey</h1>
+                                <p class="text-brand-secondary font-bold text-[14px] tracking-[0.1em] uppercase mb-0.5">Consultant Psychiatrist</p>
+                                <p class="text-slate-600 text-[13px] font-medium">MBBS, MD (Psychiatry)</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-3 pt-2 border-t border-slate-700">
-                            <i class="fa-solid fa-phone text-sky-400 mt-1"></i>
-                            <div>
-                                <p class="font-semibold text-white">Appointments:</p>
-                                <p class="text-sm">04829 216600, 9497216600</p>
+                        
+                        <div class="px-10 mb-2">
+                            <div class="w-full border-t-[1.5px] border-slate-200"></div>
+                        </div>
+
+                        <!-- Patient Information Block -->
+                        <div class="px-10 my-1">
+                            <div class="bg-[#f8fafc] border-l-[4px] border-brand-primary p-3 rounded-r-lg shadow-sm text-[13px] leading-snug">
+                                <div class="grid grid-cols-12 gap-y-1 gap-x-4">
+                                    <div class="col-span-4 flex items-baseline">
+                                        <span class="text-slate-500 font-semibold w-28 shrink-0">Assessment Date</span>
+                                        <span class="text-slate-400 mr-2">:</span>
+                                        <span id="out-assessment-date" class="font-bold text-brand-dark flex-1"></span>
+                                    </div>
+                                    <div class="col-span-5 flex items-baseline">
+                                        <span class="text-slate-500 font-semibold w-24 shrink-0">Patient Name</span>
+                                        <span class="text-slate-400 mr-2">:</span>
+                                        <span id="out-name" class="font-bold text-brand-primary flex-1 text-[14px]"></span>
+                                    </div>
+                                    <div class="col-span-3 flex items-baseline">
+                                        <span class="text-slate-500 font-semibold w-14 shrink-0">Gender</span>
+                                        <span class="text-slate-400 mr-2">:</span>
+                                        <span id="out-gender" class="font-semibold text-brand-dark flex-1"></span>
+                                    </div>
+                                    <div class="col-span-4 flex items-baseline">
+                                        <span class="text-slate-500 font-semibold w-28 shrink-0">DOB / AGE</span>
+                                        <span class="text-slate-400 mr-2">:</span>
+                                        <span id="out-dob" class="font-semibold text-brand-dark flex-1"></span>
+                                    </div>
+                                    <div class="col-span-8 flex items-baseline">
+                                        <span class="text-slate-500 font-semibold w-24 shrink-0">Address / Tel</span>
+                                        <span class="text-slate-400 mr-2">:</span>
+                                        <span id="out-address" class="font-medium text-brand-dark flex-1"></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex items-start gap-3 pt-2 border-t border-slate-700">
-                            <i class="fa-solid fa-envelope text-sky-400 mt-1"></i>
-                            <div>
-                                <p class="font-semibold text-white">Email:</p>
-                                <p class="text-sm">dranumonmonsey@gmail.com</p>
+
+                        <!-- Main Clinical Content Area -->
+                        <div class="px-10 flex-1 flex flex-col space-y-3 my-3">
+                            
+                            <div id="evaluation-container" class="hidden report-section">
+                                <div class="inline-block border-b-2 border-brand-secondary pb-0.5 mb-1.5">
+                                    <h3 class="text-[14px] font-bold text-brand-primary uppercase tracking-widest">Clinical Evaluation</h3>
+                                </div>
+                                <div id="out-evaluation" class="rich-text text-[14px] leading-relaxed text-slate-800 text-justify"></div>
                             </div>
+
+                            <div id="history-container" class="hidden report-section">
+                                <div class="inline-block border-b-2 border-brand-secondary pb-0.5 mb-1.5">
+                                    <h3 class="text-[14px] font-bold text-brand-primary uppercase tracking-widest">Background & History</h3>
+                                </div>
+                                <div id="out-history" class="rich-text text-[14px] leading-relaxed text-slate-800 text-justify"></div>
+                            </div>
+
+                            <div id="diagnosis-container" class="hidden report-section">
+                                <div class="inline-block border-b-2 border-brand-secondary pb-0.5 mb-1.5">
+                                    <h3 class="text-[14px] font-bold text-brand-primary uppercase tracking-widest">Primary Diagnosis</h3>
+                                </div>
+                                <div id="out-diagnosis" class="rich-text text-[15px] font-bold text-brand-primary leading-[1.4] uppercase"></div>
+                            </div>
+
+                            <div id="treatment-container" class="hidden report-section">
+                                <div class="inline-block border-b-2 border-brand-secondary pb-0.5 mb-1.5">
+                                    <h3 class="text-[14px] font-bold text-brand-primary uppercase tracking-widest">Treatment & Management</h3>
+                                </div>
+                                <div id="out-treatment" class="rich-text text-[14px] leading-relaxed text-slate-800 text-justify"></div>
+                            </div>
+
+                        </div>
+
+                        <!-- Footer Section (White Background) -->
+                        <div class="mt-auto bg-white pt-2 pb-3 px-10">
+                            <div class="flex justify-between items-end">
+                                
+                                <!-- Left: Contact Details -->
+                                <div class="w-7/12 space-y-1 text-[11px] text-slate-700 mb-1">
+                                    <div class="flex items-center font-medium">
+                                        <svg class="w-3.5 h-3.5 mr-2 text-brand-secondary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                        <span>Kottarakara, Kollam, Kerala - 691531</span>
+                                    </div>
+                                    <div class="flex items-center font-medium">
+                                        <svg class="w-3.5 h-3.5 mr-2 text-brand-secondary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                                        <span>+91 9995910520</span>
+                                    </div>
+                                    <div class="flex items-center font-medium">
+                                        <svg class="w-3.5 h-3.5 mr-2 text-brand-secondary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                        <span>dranumonmonsey@gmail.com</span>
+                                    </div>
+                                    <div class="flex items-center font-medium">
+                                        <svg class="w-3.5 h-3.5 mr-2 text-brand-secondary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                                        <span>www.mindwisemd.keraladoctors.in</span>
+                                    </div>
+                                </div>
+
+                                <!-- Right: Dynamic Seal & Signature Block -->
+                                <div class="w-5/12 flex flex-col items-center justify-end relative text-center">
+                                    <div class="h-20 w-full flex justify-center items-center relative z-10 -mb-1">
+                                        <img id="out-seal-img" src="" class="absolute max-h-[90px] max-w-[120px] w-auto object-contain opacity-85" alt="Official Seal" style="display: none;">
+                                        <img id="out-signature-img" src="" class="absolute max-h-[80px] max-w-[180px] w-auto object-contain z-10" alt="Signature" style="display: none;">
+                                    </div>
+                                    <div class="border-t-[1.5px] border-slate-300 w-56 pt-1 mt-1">
+                                        <p class="font-bold text-[12px] text-brand-primary">Dr. Anu Mon Monsey</p>
+                                        <p class="text-[10px] text-slate-500">Consultant Psychiatrist</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <!-- Bottom Accent Bar -->
+                        <div class="flex w-full h-3">
+                            <div class="w-1/4 bg-brand-secondary"></div>
+                            <div class="w-3/4 bg-brand-primary"></div>
                         </div>
                     </div>
-                    <a href="tel:04829216600" class="block w-full text-center bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl transition-colors">
-                        Call for Appointment
-                    </a>
                 </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-slate-950 text-slate-500 py-10 border-t border-slate-800">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div>
-                <div class="flex items-center gap-2 mb-1">
-                    <i class="fa-solid fa-brain text-sky-600"></i>
-                    <span class="font-bold text-lg text-slate-300">Dr. Anu Mon Monsey</span>
-                </div>
-                <p class="text-sm">Consultant Psychiatrist • Kerala, India</p>
-                <p class="text-xs mt-1">English • Malayalam • Tamil • Hindi</p>
             </div>
             
-            <div class="flex gap-4">
-                <a href="https://www.instagram.com/mindwisemd" target="_blank" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-sky-600 hover:text-white transition-colors">
-                    <i class="fa-brands fa-instagram"></i>
-                </a>
-                <a href="mailto:dranumonmonsey@gmail.com" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-sky-600 hover:text-white transition-colors">
-                    <i class="fa-regular fa-envelope"></i>
-                </a>
-            </div>
         </div>
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-slate-900 text-sm text-center md:text-left">
-            &copy; 2026 Dr. Anu Mon Monsey. All rights reserved.
-        </div>
-    </footer>
+    </div>
 
+    <!-- Script Section -->
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const pin = document.getElementById('pin-input').value;
+            if(pin === '3830') {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app-screen').classList.remove('hidden');
+                setDefaultDates();
+            } else {
+                alert('Invalid PIN.');
+                document.getElementById('pin-input').value = '';
+            }
+        });
+
+        function setDefaultDates() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('in-assessment-date').value = today;
+            updatePreview();
+        }
+
+        function calculateAgeFromDOB() {
+            const dobVal = document.getElementById('in-dob').value;
+            if (!dobVal) return;
+            const dob = new Date(dobVal);
+            const refVal = document.getElementById('in-assessment-date').value;
+            const refDate = refVal ? new Date(refVal) : new Date();
+            
+            let age = refDate.getFullYear() - dob.getFullYear();
+            const m = refDate.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && refDate.getDate() < dob.getDate())) {
+                age--;
+            }
+            if (age >= 0) {
+                document.getElementById('in-age').value = age + ' Years';
+            }
+            updatePreview();
+        }
+
+        document.getElementById('in-dob').addEventListener('change', calculateAgeFromDOB);
+        document.getElementById('in-assessment-date').addEventListener('change', () => {
+            if (document.getElementById('in-dob').value) {
+                calculateAgeFromDOB();
+            }
+        });
+
+        function formatText(text) {
+            if (!text) return '';
+            let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            return formatted.replace(/\n/g, '<br>');
+        }
+
+        function handleImageUpload(inputId, outputId) {
+            const input = document.getElementById(inputId);
+            const img = document.getElementById(outputId);
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    const rotation = (Math.random() * 6 - 3).toFixed(1);
+                    const shiftX = (Math.random() * 6 - 3).toFixed(1);
+                    const shiftY = (Math.random() * 6 - 3).toFixed(1);
+                    img.style.transform = `rotate(${rotation}deg) translate(${shiftX}px, ${shiftY}px)`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        document.getElementById('in-signature-image').addEventListener('change', () => handleImageUpload('in-signature-image', 'out-signature-img'));
+        document.getElementById('in-seal-image').addEventListener('change', () => handleImageUpload('in-seal-image', 'out-seal-img'));
+
+        function updatePreview() {
+            const formatDate = (dateStr) => {
+                if(!dateStr) return '';
+                const d = new Date(dateStr);
+                return `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth()+1).toString().padStart(2, '0')}-${d.getFullYear()}`;
+            };
+
+            document.getElementById('out-assessment-date').innerText = formatDate(document.getElementById('in-assessment-date').value);
+            document.getElementById('out-name').innerText = document.getElementById('in-name').value;
+            document.getElementById('out-gender').innerText = document.getElementById('in-gender').value;
+            
+            const dobFormatted = formatDate(document.getElementById('in-dob').value);
+            const ageVal = document.getElementById('in-age').value.trim();
+            let dobAgeStr = '';
+            if (dobFormatted && ageVal) {
+                dobAgeStr = `${dobFormatted} / ${ageVal}`;
+            } else if (dobFormatted) {
+                dobAgeStr = dobFormatted;
+            } else if (ageVal) {
+                dobAgeStr = ageVal;
+            }
+            document.getElementById('out-dob').innerText = dobAgeStr;
+
+            document.getElementById('out-address').innerText = document.getElementById('in-address').value;
+
+            const evaluation = document.getElementById('in-evaluation').value;
+            const history = document.getElementById('in-history').value;
+            const diagnosis = document.getElementById('in-diagnosis').value;
+            const treatment = document.getElementById('in-treatment').value;
+
+            document.getElementById('out-evaluation').innerHTML = formatText(evaluation);
+            document.getElementById('evaluation-container').style.display = evaluation ? 'block' : 'none';
+
+            document.getElementById('out-history').innerHTML = formatText(history);
+            document.getElementById('history-container').style.display = history ? 'block' : 'none';
+
+            document.getElementById('out-diagnosis').innerHTML = formatText(diagnosis);
+            document.getElementById('diagnosis-container').style.display = diagnosis ? 'block' : 'none';
+
+            document.getElementById('out-treatment').innerHTML = formatText(treatment);
+            document.getElementById('treatment-container').style.display = treatment ? 'block' : 'none';
+        }
+
+        const inputs = document.querySelectorAll('input[type="text"], input[type="date"], select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('input', updatePreview);
+            input.addEventListener('change', updatePreview);
+        });
+
+        function generatePDF() {
+            const btn = document.getElementById('export-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Generating PDF...';
+            btn.classList.add('opacity-75', 'cursor-wait');
+
+            const container = document.getElementById('prescription-preview');
+            const currentTransform = container.style.transform;
+            container.classList.remove('scale-[0.48]', 'sm:scale-[0.7]', 'lg:scale-100');
+            container.style.transform = 'scale(1)';
+
+            setTimeout(() => {
+                html2canvas(container, {
+                    scale: 3, 
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                    const { jsPDF } = window.jspdf;
+                    
+                    const pdf = new jsPDF({
+                        orientation: 'portrait',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
+
+                    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+                    
+                    const patientName = document.getElementById('in-name').value || 'Patient';
+                    const date = document.getElementById('in-assessment-date').value || 'Report';
+                    pdf.save(`Dr_Anu_Mon_Monsey_${patientName}_${date}.pdf`);
+
+                    container.classList.add('scale-[0.48]', 'sm:scale-[0.7]', 'lg:scale-100');
+                    container.style.transform = currentTransform;
+                    
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('opacity-75', 'cursor-wait');
+                }).catch(err => {
+                    console.error("PDF generation failed:", err);
+                    alert("There was an error generating the PDF.");
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('opacity-75', 'cursor-wait');
+                    
+                    container.classList.add('scale-[0.48]', 'sm:scale-[0.7]', 'lg:scale-100');
+                    container.style.transform = currentTransform;
+                });
+            }, 500); 
+        }
+    </script>
 </body>
 </html>

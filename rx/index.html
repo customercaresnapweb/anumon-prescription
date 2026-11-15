@@ -104,7 +104,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-3 gap-3">
                         <div>
                             <label class="block font-semibold text-brand-dark mb-1.5">Assessment Date</label>
                             <input type="date" id="in-assessment-date" class="w-full p-3 rounded-xl border border-slate-200 focus:border-brand-secondary outline-none transition-all bg-slate-50 focus:bg-white text-brand-dark">
@@ -112,6 +112,10 @@
                         <div>
                             <label class="block font-semibold text-brand-dark mb-1.5">Date of Birth</label>
                             <input type="date" id="in-dob" class="w-full p-3 rounded-xl border border-slate-200 focus:border-brand-secondary outline-none transition-all bg-slate-50 focus:bg-white text-brand-dark">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-brand-dark mb-1.5">Age</label>
+                            <input type="text" id="in-age" placeholder="e.g. 32 Years" class="w-full p-3 rounded-xl border border-slate-200 focus:border-brand-secondary outline-none transition-all bg-slate-50 focus:bg-white text-brand-dark">
                         </div>
                     </div>
 
@@ -213,7 +217,7 @@
                                         <span id="out-gender" class="font-semibold text-brand-dark flex-1"></span>
                                     </div>
                                     <div class="col-span-4 flex items-baseline">
-                                        <span class="text-slate-500 font-semibold w-28 shrink-0">Date of Birth</span>
+                                        <span class="text-slate-500 font-semibold w-28 shrink-0">DOB / Age</span>
                                         <span class="text-slate-400 mr-2">:</span>
                                         <span id="out-dob" class="font-semibold text-brand-dark flex-1"></span>
                                     </div>
@@ -331,6 +335,31 @@
             updatePreview();
         }
 
+        function calculateAgeFromDOB() {
+            const dobVal = document.getElementById('in-dob').value;
+            if (!dobVal) return;
+            const dob = new Date(dobVal);
+            const refVal = document.getElementById('in-assessment-date').value;
+            const refDate = refVal ? new Date(refVal) : new Date();
+            
+            let age = refDate.getFullYear() - dob.getFullYear();
+            const m = refDate.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && refDate.getDate() < dob.getDate())) {
+                age--;
+            }
+            if (age >= 0) {
+                document.getElementById('in-age').value = age + ' Years';
+            }
+            updatePreview();
+        }
+
+        document.getElementById('in-dob').addEventListener('change', calculateAgeFromDOB);
+        document.getElementById('in-assessment-date').addEventListener('change', () => {
+            if (document.getElementById('in-dob').value) {
+                calculateAgeFromDOB();
+            }
+        });
+
         function formatText(text) {
             if (!text) return '';
             let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -368,7 +397,19 @@
             document.getElementById('out-assessment-date').innerText = formatDate(document.getElementById('in-assessment-date').value);
             document.getElementById('out-name').innerText = document.getElementById('in-name').value;
             document.getElementById('out-gender').innerText = document.getElementById('in-gender').value;
-            document.getElementById('out-dob').innerText = formatDate(document.getElementById('in-dob').value);
+            
+            const dobFormatted = formatDate(document.getElementById('in-dob').value);
+            const ageVal = document.getElementById('in-age').value.trim();
+            let dobAgeStr = '';
+            if (dobFormatted && ageVal) {
+                dobAgeStr = `${dobFormatted} / ${ageVal}`;
+            } else if (dobFormatted) {
+                dobAgeStr = dobFormatted;
+            } else if (ageVal) {
+                dobAgeStr = ageVal;
+            }
+            document.getElementById('out-dob').innerText = dobAgeStr;
+
             document.getElementById('out-address').innerText = document.getElementById('in-address').value;
 
             const evaluation = document.getElementById('in-evaluation').value;
